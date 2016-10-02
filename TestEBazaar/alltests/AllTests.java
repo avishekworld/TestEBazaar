@@ -13,8 +13,9 @@ import junit.framework.TestSuite;
 
 public class AllTests extends TestSuite {
     static Logger log = Logger.getLogger(AllTests.class.getName());
-    private static final String LOC_DB_PROPS = "\\MainProjectSolnCrVerif\\resources\\dbconfig.properties";
-    private static final String LOC_RULES_PROPS = "\\MainProjectSolnCrVerif\\resources\\rulesconfig.properties";
+    //using git and mac os so path is different than windows os
+    private static final String LOC_DB_PROPS = "/ebazaar/EBazaar/resources/dbconfig.properties";
+    private static final String LOC_RULES_PROPS = "/ebazaar/EBazaar/resources/rulesconfig.properties";
     private static final String context = computeDir();
     static {
     	initializeProperties();
@@ -23,8 +24,10 @@ public class AllTests extends TestSuite {
     private static String computeDir() {
     	File f = new File(System.getProperty("user.dir"));
     	if(f.exists() && f.isDirectory()) {
-    		System.out.println( f.getParent());
-    		return f.getParent();
+    		File parent =new File(f.getParent());
+    		String parentOfParaent = parent.getParent();
+    		System.out.println( "User Dir " + parentOfParaent);
+    		return parentOfParaent;
     	}
     	return null;
     	
@@ -33,7 +36,7 @@ public class AllTests extends TestSuite {
     @SuppressWarnings("unused")
 	private static boolean initialized = false;
     
-    public static void initializeProperties() {
+    public static synchronized void initializeProperties() {
     	// Need to specify full path to dbconfig.properties
 		// when accessing from outside the project.
     	if (!initialized) {
