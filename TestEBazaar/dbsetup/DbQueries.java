@@ -12,10 +12,11 @@ import middleware.dataaccess.DataAccessUtil;
 import middleware.externalinterfaces.DbConfigKey;
 import alltests.*;
 public class DbQueries {
+	static DbConfigProperties PROPS;
 	static {
+		PROPS = new DbConfigProperties();
 		AllTests.initializeProperties();
 	}
-	static final DbConfigProperties PROPS = new DbConfigProperties();
 	static Connection con = null;
 	static Statement stmt = null;
 	static final String USER = PROPS.getProperty(DbConfigKey.DB_USER.getVal()); 

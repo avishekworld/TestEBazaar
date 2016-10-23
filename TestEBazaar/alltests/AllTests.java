@@ -14,20 +14,29 @@ import junit.framework.TestSuite;
 public class AllTests extends TestSuite {
     static Logger log = Logger.getLogger(AllTests.class.getName());
     //using git and mac os so path is different than windows os
+    //if not using git plz assign false to isUsingGit flag
+    static boolean isUsingGit = true;
     private static final String LOC_DB_PROPS = "/ebazaar/EBazaar/resources/dbconfig.properties";
     private static final String LOC_RULES_PROPS = "/ebazaar/EBazaar/resources/rulesconfig.properties";
-    private static final String context = computeDir();
+    private static String context = "";
     static {
+    	context = computeDir();
     	initializeProperties();
 	}
     
     private static String computeDir() {
     	File f = new File(System.getProperty("user.dir"));
+    	System.out.println("Test project dir " + f.toString());
     	if(f.exists() && f.isDirectory()) {
+    		String userDir ="";
     		File parent =new File(f.getParent());
-    		String parentOfParaent = parent.getParent();
-    		System.out.println( "User Dir " + parentOfParaent);
-    		return parentOfParaent;
+    		if(isUsingGit){
+    			userDir = parent.getParent();
+    		}else{
+    			userDir = parent.toString();
+    		}
+    		System.out.println("Root dir for all projects " + userDir);
+    		return userDir;
     	}
     	return null;
     	
@@ -40,6 +49,7 @@ public class AllTests extends TestSuite {
     	// Need to specify full path to dbconfig.properties
 		// when accessing from outside the project.
     	if (!initialized) {
+    		System.out.println("AllTest Reading Properties");
     		DbConfigProperties.readProps(context + LOC_DB_PROPS);
     		RulesConfigProperties.readProps(context + LOC_RULES_PROPS);
     		initialized = true;
