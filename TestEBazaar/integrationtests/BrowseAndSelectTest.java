@@ -50,7 +50,7 @@ public class BrowseAndSelectTest extends TestCase {
 			}
 			assertTrue(nameFound);
 			// Clean up table
-			DbQueries.deleteCatalogSql(Integer.parseInt(vals[1]));
+			DbQueries.deleteCatalogRow(Integer.parseInt(vals[1]));
 			
 		}
 	}

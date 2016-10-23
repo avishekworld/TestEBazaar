@@ -136,6 +136,34 @@ public class DbQueries {
 		}
 		return vals;
 	}
+	/**
+	 * Returns a String[] with values:
+	 * 0 - query
+	 * 1 - address id
+	 * 2 - customer id
+	 * 3 - street
+	 * 4 - city
+	 * 5 - state
+	 * 6 - zip
+	 */
+	public static String[] insertAddressRow(String custId) {
+		String[] vals = saveAddressSql(custId);
+		String query = vals[0];
+		try {
+			stmt = acctCon.createStatement();
+			stmt.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs.next()) {
+				vals[1] = (new Integer(rs.getInt(1)).toString());
+			}
+			stmt.close();
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return vals;
+	}
 	public static void deleteCatalogRow(Integer catId) {
 		try {
 			stmt = prodCon.createStatement();
@@ -166,7 +194,16 @@ public class DbQueries {
 			e.printStackTrace();
 		}
 	}
-	
+	public static void deleteAddressRow(Integer addressId) {
+		try {
+			stmt = acctCon.createStatement();
+			stmt.executeUpdate(deleteAdressSql(addressId));
+			stmt.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	///queries
 	public static String[] saveCatalogSql() {
@@ -207,15 +244,38 @@ public class DbQueries {
 		vals[3] = lname;
 		return vals;
 	}
+	public static String[] saveAddressSql(String custId) {
+		String[] vals = new String[7];
+		String street = "404 Broadway";
+		String city = "Fairfield";
+		String state = "IA";
+		String zip = "52556";
+		vals[0] =
+		"INSERT into altshipaddress "+
+		"VALUES(NULL,"+ custId + ",'" +
+				  street+"','"+
+				  city+"','"+
+				  state+"','"+
+				  zip+"')";
+		System.out.println("Adress query " + vals[0]);
+		vals[2] = custId +"";
+		vals[3] = street;
+		vals[4] = city;
+		vals[5] = state;
+		vals[6] = zip;
+		return vals;
+	}
 	public static String deleteProductSql(Integer prodId) {
 		return "DELETE FROM Product WHERE productid = "+prodId;
 	}
 	public static String deleteCatalogSql(Integer catId) {
 		return "DELETE FROM CatalogType WHERE catalogid = "+catId;
 	}
-	
 	public static String deleteCustomerSql(Integer custId) {
 		return "DELETE FROM Customer WHERE custid = "+custId;
+	}
+	public static String deleteAdressSql(Integer addressId) {
+		return "DELETE FROM altshipaddress WHERE addressid = "+addressId;
 	}
 	
 	public static void main(String[] args) {
