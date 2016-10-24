@@ -14,12 +14,26 @@ import junit.framework.TestSuite;
 public class AllTests extends TestSuite {
     static Logger log = Logger.getLogger(AllTests.class.getName());
     //using git and mac os so path is different than windows os
-    //if not using git plz assign false to isUsingGit flag
-    static boolean isUsingGit = true;
-    private static final String LOC_DB_PROPS = "/ebazaar/EBazaar/resources/dbconfig.properties";
-    private static final String LOC_RULES_PROPS = "/ebazaar/EBazaar/resources/rulesconfig.properties";
+    //if not using git and mac plz assign false to isUsingGit flag and isUsingMac flag
+    static boolean isUsingGit = false;
+    static boolean isUsingMac = true;
+    private static  String LOC_DB_PROPS = "/ebazaar/EBazaar/resources/dbconfig.properties";
+    private static  String LOC_RULES_PROPS = "/ebazaar/EBazaar/resources/rulesconfig.properties";
     private static String context = "";
     static {
+    	if(isUsingMac && isUsingGit){
+    		LOC_DB_PROPS = "/ebazaar/EBazaar/resources/dbconfig.properties";
+    	    LOC_RULES_PROPS = "/ebazaar/EBazaar/resources/rulesconfig.properties";
+    	}if(isUsingMac && !isUsingGit){
+    		LOC_DB_PROPS = "/EBazaar/resources/dbconfig.properties";
+    	    LOC_RULES_PROPS = "/EBazaar/resources/rulesconfig.properties";
+    	}else if(!isUsingMac && isUsingGit){
+    		LOC_DB_PROPS = "\\ebazaar\\EBazaar\\resources\\dbconfig.properties";
+    	    LOC_RULES_PROPS = "\\ebazaar\\EBazaar\\resources\\rulesconfig.properties";
+    	}else if(!isUsingMac && !isUsingGit){
+    		LOC_DB_PROPS = "\\EBazaar\\resources\\dbconfig.properties";
+    	    LOC_RULES_PROPS = "\\EBazaar\\resources\\rulesconfig.properties";
+    	}
     	context = computeDir();
     	initializeProperties();
 	}
